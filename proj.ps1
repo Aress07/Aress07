@@ -44,7 +44,7 @@ switch ($choice) {
             default {
                 Write-Host "Please Enter a valid number!"
             }
-            # Could Add More File Management Operations Such As Creating, Renaming ... 
+            # Could Add More File Management Operations Such As Creating, Renaming .. 
         }
         Get-ChildItem
     }
