@@ -9,3 +9,4 @@
 - in your terminal, execute the command in the repository where the file is located `chmod u+x <file_name>`, it's supposed to give you the right to execute the script.
 - execute the command `./<file_name>`
 
+- https://roadmap.sh/projects/server-stats
