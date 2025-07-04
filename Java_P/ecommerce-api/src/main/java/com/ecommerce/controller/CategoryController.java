@@ -1,43 +1,65 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.model.Category;
+import com.ecommerce.dto.CategoryDto;
+import com.ecommerce.dto.ApiResponse;
 import com.ecommerce.service.CategoryService;
-import com.ecommerce.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/categories")
-@CrossOrigin
+@RequiredArgsConstructor
 public class CategoryController {
-    @Autowired
-    private CategoryService categoryService;
+
+    private final CategoryService categoryService;
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.getAll();
-    }
-
-    @PostMapping
-    public Category createCategory(@RequestBody Category category) {
-        return categoryService.save(category);
+    public ResponseEntity<ApiResponse<List<CategoryDto>>> getAllCategories() {
+        List<CategoryDto> categories = categoryService.getAllCategories(Pageable.unpaged()).getContent(); // Assuming service returns Page, converting to List
+        return ResponseEntity.ok(
+                ApiResponse.success("Categories retrieved successfully", categories)
+        );
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable Long id) {
-        return categoryService.getById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category id " + id + " not found"));
+    public ResponseEntity<ApiResponse<CategoryDto>> getCategoryById(@PathVariable Long id) {
+        CategoryDto category = categoryService.getCategoryById(id);
+        return ResponseEntity.ok(
+                ApiResponse.success("Category retrieved successfully", category)
+        );
     }
 
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<CategoryDto>> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
+        CategoryDto createdCategory = categoryService.createCategory(categoryDto);
+        return ResponseEntity.ok(
+                ApiResponse.success("Category created successfully", createdCategory)
+        );
+    }
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<CategoryDto>> updateCategory(
+            @PathVariable Long id,
+            @Valid @RequestBody CategoryDto categoryDto) {
+        CategoryDto updatedCategory = categoryService.updateCategory(id, categoryDto);
+        return ResponseEntity.ok(
+                ApiResponse.success("Category updated successfully", updatedCategory)
+        );
+    }
     @DeleteMapping("/{id}")
-    public void deleteCategory(@PathVariable Long id) {
-        if (!categoryService.getById(id).isPresent()) {
-            throw new ResourceNotFoundException("Category id " + id + " not found");
-        }
-        categoryService.delete(id);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable Long id) {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok(
+                ApiResponse.success("Category deleted successfully", null)
+        );
     }
 }

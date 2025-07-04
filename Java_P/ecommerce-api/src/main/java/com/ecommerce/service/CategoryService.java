@@ -1,33 +1,75 @@
 package com.ecommerce.service;
 
+import com.ecommerce.dto.CategoryDto;
+import com.ecommerce.exception.ResourceNotFoundException;
+import com.ecommerce.exception.DuplicateResourceException;
 import com.ecommerce.model.Category;
 import com.ecommerce.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class CategoryService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    public List<Category> getAll() {
-        return categoryRepository.findAll();
+    @Transactional(readOnly = true)
+    public Page<CategoryDto> getAllCategories(Pageable pageable) {
+        return categoryRepository.findAll(pageable)
+                .map(this::convertToDto);
     }
 
-    public Optional<Category> getById(Long id) {
-        return categoryRepository.findById(id);
+    @Transactional(readOnly = true)
+    public CategoryDto getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+        return convertToDto(category);
+    }
+    public CategoryDto createCategory(CategoryDto categoryDto) {
+        if (categoryRepository.existsByName(categoryDto.getName())) {
+            throw new DuplicateResourceException("Category with name '" + categoryDto.getName() + "' already exists");
+        }
+
+        Category category = convertToEntity(categoryDto);
+        Category savedCategory = categoryRepository.save(category);
+        return convertToDto(savedCategory);
     }
 
-    public Category save(Category category) {
-        return categoryRepository.save(category);
-    }
+    public CategoryDto updateCategory(Long id, CategoryDto categoryDto) {
+        Category existingCategory = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
 
-    public void delete(Long id) {
-        categoryRepository.deleteById(id);
+        if (!existingCategory.getName().equals(categoryDto.getName()) &&
+                categoryRepository.existsByName(categoryDto.getName())) {
+            throw new DuplicateResourceException("Category with name '" + categoryDto.getName() + "' already exists");
+        }
+
+        existingCategory.setName(categoryDto.getName());
+
+
+        Category updatedCategory = categoryRepository.save(existingCategory);
+        return convertToDto(updatedCategory);
+    }
+    public void deleteCategory(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+
+        categoryRepository.delete(category);
+    }
+    private CategoryDto convertToDto(Category category) {
+        CategoryDto dto = new CategoryDto();
+        dto.setId(category.getId());
+        dto.setName(category.getName());
+        return dto;
+    }
+    private Category convertToEntity(CategoryDto dto) {
+        Category category = new Category();
+        category.setName(dto.getName());
+        return category;
     }
 }
-

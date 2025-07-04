@@ -1,61 +1,76 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.model.Product;
+import com.ecommerce.dto.ProductDto;
+import com.ecommerce.dto.ApiResponse;
 import com.ecommerce.service.ProductService;
-import com.ecommerce.exception.ResourceNotFoundException; // Ensure this import
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAll();
+    public ResponseEntity<ApiResponse<Page<ProductDto>>> getAllProducts(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String name,
+            Pageable pageable) {
+        Page<ProductDto> products = productService.getAllProducts(categoryId, name, null, pageable);
+        return ResponseEntity.ok(
+                ApiResponse.success("Products retrieved successfully", products)
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
-        return ResponseEntity.ok(product);
+    public ResponseEntity<ApiResponse<ProductDto>> getProductById(@PathVariable Long id) {
+        ProductDto product = productService.getProductById(id);
+        return ResponseEntity.ok(
+                ApiResponse.success("Product retrieved successfully", product)
+        );
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<ApiResponse<Page<ProductDto>>> getProductsByCategory(
+            @PathVariable Long categoryId,
+            Pageable pageable) {
+        Page<ProductDto> products = productService.getProductsByCategory(categoryId, pageable);
+        return ResponseEntity.ok(
+                ApiResponse.success("Products retrieved successfully", products)
+        );
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@RequestBody Product product) {
-        return productService.save(product);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<ProductDto>> createProduct(@Valid @RequestBody ProductDto productDto) {
+        ProductDto createdProduct = productService.createProduct(productDto);
+        return ResponseEntity.ok(
+                ApiResponse.success("Product created successfully", createdProduct)
+        );
     }
-
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        Product updateProduct = productService.update(id, productDetails);
-        return ResponseEntity.ok(updateProduct);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<ProductDto>> updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductDto productDto) {
+        ProductDto updatedProduct = productService.updateProduct(id, productDto);
+        return ResponseEntity.ok(
+                ApiResponse.success("Product updated successfully", updatedProduct)
+        );
     }
-
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable Long id) {
-        productService.delete(id);
-    }
-
-    @GetMapping("/search")
-    public List<Product> searchProductsByName(@RequestParam String name) {
-        return productService.findProductByName(name);
-    }
-
-    @GetMapping("/by-category/{categoryId}")
-    public List<Product> getProductsByCategoryId(@PathVariable Long categoryId) {
-        return productService.findProductsByCategoryId(categoryId);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok(
+                ApiResponse.success("Product deleted successfully", null)
+        );
     }
 }
