@@ -5,7 +5,7 @@ Hi there! I'm passionate about technology and continuously exploring new trends 
 🚀 **Cybersecurity** – Exploring tools, techniques, and best practices for securing systems and networks.  
 <!--☁️ **Cloud Computing** – Learning how to build, deploy, and manage applications in cloud environments.  
 ⚙️ **DevOps** – Embracing automation, CI/CD pipelines, and infrastructure as code for efficient development workflows.-->
-🧠 **AI Trends** – Staying curious about how artificial intelligence is transforming industries.  
+<!-- 🧠 **AI Trends** – Staying curious about how artificial intelligence is transforming industries. --> 
 
 I'm always working on new projects, experimenting with tools, and expanding my knowledge. Feel free to explore my repos, connect, or share insights!
 
