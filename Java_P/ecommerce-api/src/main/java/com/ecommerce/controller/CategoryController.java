@@ -2,7 +2,7 @@ package com.ecommerce.controller;
 
 import com.ecommerce.dto.CategoryDto;
 import com.ecommerce.dto.ApiResponse;
-import com.ecommerce.service.CategoryService;
+import com.ecommerce.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Pageable;

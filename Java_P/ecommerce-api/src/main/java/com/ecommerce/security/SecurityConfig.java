@@ -11,14 +11,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter; // Needed for addFilterBefore
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    private final com.ecommerce.services.UserDetailsServiceImpl userDetailsService; // Assuming this is your implementation
-    private final JwtAuthenticationFilter jwtAuthenticationFilter; // Inject the filter
+    private final com.ecommerce.services.UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SecurityConfig(com.ecommerce.services.UserDetailsServiceImpl userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userDetailsService = userDetailsService;
@@ -41,17 +44,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless APIs (JWT)
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        // ALLOW PUBLIC ACCESS TO AUTHENTICATION ENDPOINTS FIRST
-                        .requestMatchers("/api/auth/**", "/req/signup").permitAll() // Explicitly permit all for auth endpoints
-                        // ALL OTHER REQUESTS REQUIRE AUTHENTICATION
+                        .requestMatchers("/api/auth/**", "/req/signup").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWTs imply stateless sessions
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                // Add your JWT filter before Spring Security's default UsernamePasswordAuthenticationFilter
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

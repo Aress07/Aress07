@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.URL;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -29,6 +31,9 @@ public class ProductDto {
     @Min(value = 0, message = "Quantity must be non-negative")
     private Integer quantity;
 
+//    @NotNull(message = "Product Image is required")
+    @URL
+    private String imageUrl;
 
     @NotNull(message = "Category ID is required")
     private Long categoryId;
