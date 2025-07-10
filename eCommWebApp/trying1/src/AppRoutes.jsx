@@ -26,9 +26,10 @@ function AppRoutes() {
         <Route path="/products/:id" element={<PrivateRoute><ProductDetails /></PrivateRoute>} />        
         <Route path="/products" element={<PrivateRoute><Products /></PrivateRoute>} />
 
+        <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
+
         <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />
-        <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
         <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
       </Routes>
     </Router>

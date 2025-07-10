@@ -18,12 +18,12 @@ export function AuthProvider({ children }) {
     }, []);
 
 
-    const login = (username, token) => {
-        const userObj = { name: username};
+    const login = (username, role, token) => {
+        const userObj = { name: username, role};
         localStorage.setItem('user', JSON.stringify(userObj));
         localStorage.setItem('token', token);
         setUser(userObj);
-        setToken(jwtToken);
+        setToken(token);
     };
 
     const logout = () => {

@@ -9,7 +9,6 @@ export default function Login() {
     const [error, setError] = useState('');
     const {login} = useAuth();
     const navigate = useNavigate();
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -18,24 +17,27 @@ export default function Login() {
             const res = await fetch('http://localhost:8080/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({username, password})
+                body: JSON.stringify({ username, password })
             });
-            console.log("Login response status:", res.status);
+
             if (!res.ok) throw new Error('Login failed');
 
             const data = await res.json();
-
             console.log("Login response body:", data);
-            const token = data.data?.token;
+
+            const { token, username: returnedUsername, role } = data.data;
 
             if (!token) throw new Error("Token missing in response");
-            login(username, token);
+
+            login(returnedUsername, role, token);
+
             navigate('/');
         } catch (err) {
             console.error(err);
             setError('Invalid credentials');
         }
     };
+
 
     return (
         <div>
