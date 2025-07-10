@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {useAuth} from '../context/AuthContext';
-
+import { Link } from 'react-router-dom';
 function Products() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -46,7 +46,10 @@ function Products() {
                         alt={product.name}
                         style={{ width: '100%', height: 'auto', objectFit: 'contain', borderRadius: '8px', maxHeight: '200px'}} />
 
-                        <h3>{product.name}</h3>
+                        <Link to={`/products/${product.id}`} style={{ color: '#2b7', textDecoration: 'none'}}>
+                            <h3>{product.name}</h3>
+                        </Link>
+
                         <p><strong>Description:</strong> {product.description}</p>
                         <p><strong>Price:</strong> {product.price} MAD</p>
                         <p><strong>Quantity:</strong> {product.quantity}</p>  

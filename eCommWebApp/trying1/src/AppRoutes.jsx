@@ -9,6 +9,7 @@ import Admin from './pages/Admin';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrivateRoute from './components/PrivateRoute';
+import ProductDetails from './components/ProductDetails';
 
 function AppRoutes() {
   const { loading, isAuthenticated } = useAuth();
@@ -22,10 +23,12 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        <Route path="/products/:id" element={<PrivateRoute><ProductDetails /></PrivateRoute>} />        
+        <Route path="/products" element={<PrivateRoute><Products /></PrivateRoute>} />
+
         <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />
         <Route path="/categories" element={<PrivateRoute><Categories /></PrivateRoute>} />
-        <Route path="/products" element={<PrivateRoute><Products /></PrivateRoute>} />
         <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
       </Routes>
     </Router>
