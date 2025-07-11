@@ -1,31 +1,98 @@
+
 function About() {
   return (
-  <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-            <h1>About Our Store</h1>
-            <p>
-                Welcome to our e-commerce platform! We're passionate about providing you with high-quality products, great customer service,
-                and a seamless shopping experience.
-            </p>
 
-            <h2>Our Mission</h2>
-            <p>
-                We aim to connect customers with trusted products at affordable prices.
-                Whether you're looking for electronics, clothing, or everyday essentials, we've got you covered.
-            </p>
+    <div className="min-h-[calc(100vh-64px)] py-12 px-4 flex flex-col items-center
+                    bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
-            <h2>Why Choose Us?</h2>
-            <ul>
-                <li>Fast and secure checkout</li>
-                <li>High-quality, vetted products</li>
-                <li>Friendly customer support</li>
-                <li>Constantly growing selection</li>
-            </ul>
+      <div className="max-w-4xl mx-auto space-y-10"> 
 
-            <h2>Contact Us</h2>
-            <p>
-                Got a question or feedback? Reach out to us at: <strong>support@ourstore.com</strong>
-            </p>
+        <section className="text-center">
+          <h1 className="text-5xl font-extrabold mb-4 text-gray-800 dark:text-white">
+            About TechNexus <i className="fas fa-store text-gray-800 dark:text-white"></i>
+          </h1>
+          <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            Welcome to TechNexus, your ultimate destination for high-quality products and an unparalleled online shopping experience! 
+            Since our inception in 2023, we've been passionately committed to connecting you with the items you love, 
+            delivered right to your doorstep.
+          </p>
+        </section>
+        <div className="w-full flex justify-center py-6">
+          <img
+            src="https://images.pexels.com/photos/164572/pexels-photo-164572.jpeg"
+            alt="TechNexus Company Overview"
+            className="rounded-lg shadow-xl w-full md:w-3/4 object-cover border-4 border-blue-200 dark:border-blue-700" 
+          />
         </div>
+        <section className="text-center">
+          <h2 className="text-4xl font-bold mb-4 text-blue-600 dark:text-blue-400">
+            Our Vision & Values <i className="fas fa-eye text-blue-600 dark:text-blue-400"></i>
+          </h2>
+          <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-4">
+            At TechNexus, our vision is to create a seamless, enjoyable, and trustworthy shopping environment. We believe in:
+          </p>
+          <ul className="list-disc list-inside text-left mx-auto max-w-lg space-y-2 text-lg text-gray-700 dark:text-gray-300">
+            <li><strong className="text-blue-700 dark:text-blue-300">Customer Centricity:</strong> Your satisfaction is at the heart of everything we do.</li>
+            <li><strong className="text-blue-700 dark:text-blue-300">Quality Assurance:</strong> We meticulously select products to ensure superior quality and reliability.</li>
+            <li><strong className="text-blue-700 dark:text-blue-300">Innovation:</strong> Continuously improving our platform and expanding our product range.</li>
+            <li><strong className="text-blue-700 dark:text-blue-300">Integrity:</strong> Operating with transparency and honesty in all our dealings.</li>
+          </ul>
+        </section>
+
+        <section className="text-center">
+          <h2 className="text-4xl font-bold mb-4 text-green-600 dark:text-green-400">
+            What We Offer <i className="fas fa-gift text-green-600 dark:text-green-400"></i> 
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-lg"> 
+            <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-600">
+              <h3 className="text-2xl font-semibold mb-2 text-gray-800 dark:text-white">Vast Selection</h3>
+              <p className="text-gray-700 dark:text-gray-300">From cutting-edge electronics to trendy apparel, home essentials, and unique gifts, our diverse catalog has something for everyone.</p>
+            </div>
+            <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-600">
+              <h3 className="text-2xl font-semibold mb-2 text-gray-800 dark:text-white">Seamless Shopping</h3>
+              <p className="text-gray-700 dark:text-gray-300">Enjoy a user-friendly interface, intuitive navigation, and a secure, fast checkout process. Your privacy and security are our top priorities.</p>
+            </div>
+            <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-gray-200 dark:border-gray-600">
+              <h3 className="text-2xl font-semibold mb-2 text-gray-800 dark:text-white">Dedicated Support</h3>
+              <p className="text-gray-700 dark:text-gray-300">Our friendly customer support team is always ready to assist you. Your questions and feedback help us grow!</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="text-center">
+          <h2 className="text-4xl font-bold mb-4 text-purple-600 dark:text-purple-400">
+            Join Our Community! <i className="fas fa-users text-purple-600 dark:text-purple-400"></i> 
+          </h2>
+          <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-6">
+            Be part of the TechNexus family! Follow us on social media for the latest updates, exclusive deals, and community events.
+          </p>
+          <div className="flex justify-center space-x-6 text-3xl">
+            <a href="#" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 transition-colors duration-300" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
+            <a href="#" className="text-pink-600 hover:text-pink-800 dark:text-pink-400 dark:hover:text-pink-200 transition-colors duration-300" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
+            <a href="#" className="text-blue-400 hover:text-blue-600 dark:text-blue-200 dark:hover:text-blue-100 transition-colors duration-300" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+            <a href="#" className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-200 transition-colors duration-300" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
+          </div>
+          <p className="text-center mt-6 text-sm text-gray-600 dark:text-gray-400">
+          </p>
+        </section>
+        <section className="text-center pt-8 border-t border-gray-200 dark:border-gray-700">
+          <h2 className="text-4xl font-bold mb-4 text-red-600 dark:text-red-400">
+            Get in Touch <i className="fas fa-phone-alt text-red-600 dark:text-red-400"></i> 
+          </h2>
+          <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-2">
+            Have questions, suggestions, or just want to say hello? We'd love to hear from you!
+          </p>
+          <p className="text-xl font-semibold text-gray-800 dark:text-white">
+            Email us at: <a href="mailto:support@technexus.com" className="text-blue-600 hover:underline dark:text-blue-400">support@technexus.com</a>
+          </p>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">
+            Our support team is available Monday - Friday, 9 AM - 5 PM (Morocco Time - GMT+1).
+          </p>
+        </section>
+
+      </div>
+    </div>
   );
 }
+
 export default About;
