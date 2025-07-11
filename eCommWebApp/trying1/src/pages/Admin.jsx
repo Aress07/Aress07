@@ -380,7 +380,6 @@ function Admin() {
                         </div>
                     </form>
 
-                    {/* Product List */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {products.length === 0 ? (
                             <p className="col-span-full text-center text-gray-600 dark:text-gray-400">No products available.</p>
@@ -461,7 +460,6 @@ function Admin() {
                         </div>
                     </form>
 
-                    {/* Category List */}
                     <div className="space-y-4">
                         {categories.length === 0 ? (
                             <p className="text-center text-gray-600 dark:text-gray-400">No categories available.</p>

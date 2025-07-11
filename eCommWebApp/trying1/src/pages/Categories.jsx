@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext.jsx'; 
+import { useAuth } from '../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
 function Categories() {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); 
+    const [error, setError] = useState(null);
     const { token } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchCategories() {
-            setLoading(true); 
-            setError(null); 
+            setLoading(true);
+            setError(null);
             try {
                 if (!token) {
                     throw new Error("Authentication token not available. Please log in.");
@@ -34,14 +36,19 @@ function Categories() {
             } catch (err) {
                 console.error("Failed to fetch categories:", err);
                 setError(err.message || "An unexpected error occurred while fetching categories.");
-                setCategories([]); 
+                setCategories([]);
             } finally {
                 setLoading(false);
             }
         }
 
         fetchCategories();
-    }, [token]); 
+    }, [token]);
+
+    const handleCategoryClick = (categoryId) => {
+
+        navigate(`/products?categoryId=${categoryId}`);
+    };
 
     if (loading) {
         return (
@@ -80,15 +87,15 @@ function Categories() {
                     {categories.map((category) => (
                         <div
                             key={category.id}
+                            onClick={() => handleCategoryClick(category.id)}
                             className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700
                                        rounded-lg shadow-md hover:shadow-xl transition-all duration-300
                                        p-6 flex flex-col items-center justify-center text-center
-                                       cursor-default"
+                                       cursor-pointer" 
                         >
-
                             <i className={`fas ${getCategoryIcon(category.name)} text-4xl mb-4 text-blue-500 dark:text-blue-300`}></i>
-                            <h3 className="text-xl font-semibold text-gray-800 dark:text-white">{category.name}</h3> 
-                            {category.description && ( 
+                            <h3 className="text-xl font-semibold text-gray-800 dark:text-white">{category.name}</h3>
+                            {category.description && (
                                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{category.description}</p>
                             )}
                         </div>
@@ -99,17 +106,7 @@ function Categories() {
     );
 }
 
-
-function getCategoryIcon(categoryName) {
-    const lowerCaseName = categoryName.toLowerCase();
-    if (lowerCaseName.includes('electronics')) return 'fa-desktop';
-    if (lowerCaseName.includes('clothing') || lowerCaseName.includes('apparel')) return 'fa-tshirt';
-    if (lowerCaseName.includes('books')) return 'fa-book';
-    if (lowerCaseName.includes('food')) return 'fa-utensils';
-    if (lowerCaseName.includes('home')) return 'fa-home';
-    if (lowerCaseName.includes('sports')) return 'fa-dumbbell';
-    if (lowerCaseName.includes('beauty')) return 'fa-spa';
-    if (lowerCaseName.includes('toys')) return 'fa-toy-dinosaur';
+function getCategoryIcon() {
     return 'fa-tag';
 }
 
